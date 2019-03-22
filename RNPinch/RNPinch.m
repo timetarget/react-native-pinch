@@ -7,7 +7,6 @@
 //
 
 #import "RNPinch.h"
-#import "RCTBridge.h"
 
 @interface RNPinchException : NSException
 @end
@@ -99,6 +98,11 @@ RCT_EXPORT_MODULE();
         self.sessionConfig.HTTPCookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
     }
     return self;
+}
+
++ (BOOL)requiresMainQueueSetup
+{
+    return NO;
 }
 
 RCT_EXPORT_METHOD(fetch:(NSString *)url obj:(NSDictionary *)obj callback:(RCTResponseSenderBlock)callback) {
