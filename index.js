@@ -1,35 +1,24 @@
 'use strict';
-
 import { NativeModules } from 'react-native';
-var Q = require('q');
 
-var RNPinch = {
-    fetch: function (url, obj, callback) {
-        var deferred = Q.defer();
-        NativeModules.RNPinch.fetch(url, obj, (err, res) => {
+const RNPinch = {
+    fetch(url, obj) {
+        if (__DEV__) {
+            return global.fetch(url, obj);
+        }
 
-            if (err) {
-                deferred.reject(err);
-            } else {
-                res.json = function() {
-                    return Q.fcall(function () {
-                        return JSON.parse(res.bodyString);
-                    });
-                };
-                res.text = function() {
-                    return Q.fcall(function () {
-                        return res.bodyString;
-                    });
-                };
-                res.url = url;
+        return new Promise((resolve, reject) => {
+            NativeModules.RNPinch.fetch(url, obj, (err, res) => {
+                if (err) {
+                    return reject(err);
+                }
 
-                deferred.resolve(res);
-            }
+                res.json = () => JSON.parse(res.bodyString);
 
-            deferred.promise.nodeify(callback);
+                resolve(res);
+            });
         });
-        return deferred.promise;
     }
 };
 
-module.exports =  RNPinch;
+export default RNPinch;
