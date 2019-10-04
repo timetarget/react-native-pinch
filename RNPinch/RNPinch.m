@@ -102,7 +102,7 @@ RCT_EXPORT_MODULE();
 
 + (BOOL)requiresMainQueueSetup
 {
-    return NO;
+    return YES;
 }
 
 RCT_EXPORT_METHOD(fetch:(NSString *)url obj:(NSDictionary *)obj callback:(RCTResponseSenderBlock)callback) {
